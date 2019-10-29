@@ -1,0 +1,28 @@
+{% extends "header.html" %}
+{% block content %}
+<br>
+<br>
+<br>
+<body>
+    <div class="container">
+        <div class="jumbotron center">
+            <hr>
+            <h1 align="center">User: {{ user }}</h1>
+            <hr>
+            {% for post in posts %}
+            <p align="center">
+            Date of Review: <b>{{post[2]}}</b>
+            </p>
+            <p align="center">
+            Name of Beer: <b>{{post[0]}}</b> &emsp;Score: <b>{{post[3]}}</b>
+            </p>
+            <p align="center">
+            Review Body: <b>{{post[1]}}</b>
+            </p>
+            <br>
+            {% endfor %}
+            <hr>
+        </div>
+    </div>
+</body>
+{% endblock %} 
