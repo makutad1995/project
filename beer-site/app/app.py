@@ -212,28 +212,11 @@ def logout():
 def homepage():
     return render_template("index.html")
 
-
-    
-#endpoint for search
-@app.route('/search', methods=['GET', 'POST'])
-def search():
-    c, conn = connection()
-    if request.method == "POST":
-        bsearch = request.form['beer']
-        # search by beer, brand, or style
-        c.execute("SELECT * FROM site.front_view WHERE Name LIKE %s OR BrandName LIKE %s OR Style LIKE %s", (thwart(bsearch), thwart(bsearch), thwart(bsearch)))
-        conn.commit()
-        data = c.fetchall()
-        c.close()
-        conn.close()
-        gc.collect()
-        return render_template('search.html', data=data)
-    return render_template('search.html')
-
 # initialize app
 if __name__ == "__main__":
     app.debug = True
     app.run()
+
 
 # function to render account page and get user information including reviews made    
 @app.route('/user/<username>')
@@ -241,13 +224,27 @@ if __name__ == "__main__":
 def user(username):
     c, conn = connection()
     username = session['username']
-    c.execute("SELECT name, body, date, score FROM  site.Review, site.beer WHERE beer.id = Review.beer_id AND userName LIKE %s ORDER BY date DESC", [thwart(username)])
+    #print(thwart(username), file=sys.stderr)
+    c.execute("SELECT name, body, date, score, Review.id FROM  site.Review, site.beer WHERE beer.id = Review.beer_id AND userName LIKE %s ORDER BY date DESC", [thwart(username)])
     posts = c.fetchall()
     conn.commit()
     c.close()
     conn.close()
     gc.collect()
     return render_template('account.html', user=username, posts=posts)
+
+@app.route('/delete', methods=['POST'])
+@login_required 
+def delete_review():
+    c, conn = connection()
+    id = request.form['id']
+    username = session['username']
+    c.execute("DELETE FROM site.Review where Review.id = %s", [thwart(id)])
+    conn.commit()
+    c.close()
+    conn.close()
+    gc.collect()
+    return redirect(url_for('user',username=username))
 
 # function to render data for table containing beer info
 @app.route('/table', methods=['GET','POST'])
@@ -259,3 +256,22 @@ def results():
     conn.close()
     gc.collect()
     return render_template("table.html", value=data)
+
+
+# @app.route('/user/<username>/update')
+# @login_required
+# def update(username):
+    # form = UpdateForm()
+    # c, conn = connection()
+    # username = session['username']
+    # if request.method == "POST" and form.validate():
+        # score = form.score.data
+        # post = form.post.data
+        # id = request.json['id']
+        
+        # c.execute("UPDATE site.Review SET Review.score = %s, Review.body = %s, Review.date = CURDATE() WHERE Review.id =%s", (thwart(str(score)), thwart(post), thwart(id)))
+        # c.close()
+        # conn.close()
+        # gc.collect()
+    # return redirect(url_for('user',username=username))
+   

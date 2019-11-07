@@ -49,3 +49,10 @@ class ReviewForm(FlaskForm):
      post = TextAreaField('Body', validators= [Length(min=None, max=180, message=None)])
      submit = SubmitField('Submit')
      
+class UpdateForm(FlaskForm):
+    """
+    Form to update a users review. Update is limited to score and body of original review
+    """
+    score = IntegerField('Score', validators=[InputRequired(message='Please enter a score from 1 to 5'), NumberRange(min= 1, max= 5)])
+    post = TextAreaField('Body', validators= [Length(min=None, max=180, message=None)])
+    submit = SubmitField('Submit')
