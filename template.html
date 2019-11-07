@@ -1,0 +1,42 @@
+{% extends "header.html" %}
+{% block content %}
+<br>
+<br>
+<br>
+{{ super() }}
+    <div class="container">
+        <div class="jumbotron center">
+            {% for p in product %}
+            <h2>{{p[0]}}</h2>
+            <p>{{p[1]}}</p>
+            <p>&emsp; ABV: <b>{{p[3]}}</b> &emsp; IBU: <b>{{p[4]}}</b> &emsp; Est. Cal.: <b>{{p[5]}}</b> &emsp;</p>
+            {% endfor %}
+            <p><a class="btn btn-lg btn-success" href="{{ url_for('product_register') }}" role="button">Submit a Review</a></p>
+        </div>
+    </div>
+    {%if 'empty' in posts%}
+        <div class="container">
+            <div class="jumbotron center">
+                <h2>No Reviews</h2>
+            </div>
+        </div>
+    {%else%}
+        {%for n in posts%}
+        <div class="container-fluid">
+            <div class="jumbotron center">
+                <h2>Reviews</h2>
+                <div class="row">
+                    <p>User: {{n[1]}}</p>
+                </div>
+                <div class="row">
+                    <p>Score: <b>{{n[4]}}</b>&emsp; Date: <b>{{n[3]}}</b>&emsp;</p>
+                </div>
+                <div class="row">
+                    <p>{{n[2]}}</p>
+                </div>
+                <br>
+            </div>
+        </div>
+        {% endfor %}
+    {%endif%}
+{% endblock %}
