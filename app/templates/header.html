@@ -1,0 +1,94 @@
+<!-- Template used by all other pages. Contains a navigation bar at the top of each page with links to oher pages. Changes depending on whether user is logged in or not -->
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/utils.html" as utils %}
+<!DOCTYPE html>
+<html lang="en">
+	{% block head %}
+	<head>
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<meta charset="utf-8">
+		<title>Rate Your Hops!!</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+        
+	</head>
+	{% endblock %}
+
+		{% block navbar %}
+		{% if session.logged_in %}
+		<nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="{{ url_for('results') }}">
+					<img src="{{ url_for('static', filename='images/mainlogo.png') }}" width="30" height="30" alt="" style="display: inline-block;">
+					 <span style="display: inline-block;"><strong>Rate Your Hops</strong></span>
+				</a>
+			</div>
+			<div id="navbar3" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="nav-item">
+						<a class="btn nav-link" href="{{ url_for('logout') }}">&emsp;Logout&emsp;</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn nav-link" href="{{ url_for('product_register') }}">&emsp;Register Beer&emsp;</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn nav-link" href="{{ url_for('make_review') }}">&emsp;Make a Review&emsp;</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn nav-link" href="{{ url_for('results') }}">&emsp;Table&emsp;</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn nav-link" href="/user/<username>">&emsp;Account&emsp;</a>
+					</li>
+					{% else %}
+		<nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/">
+					<img src="{{ url_for('static', filename='images/mainlogo.png') }}" width="30" height="30" alt="" style="display: inline-block;">
+					 <span style="display: inline-block;"><strong>Rate Your Hops</strong></span>
+				</a>
+			</div>
+			<div id="navbar3" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="nav-item">
+						<a class="btn nav-link" href="{{ url_for('homepage') }}">&emsp;Home&emsp;</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn nav-link" href="{{ url_for('login') }}">&emsp;Login&emsp;</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn nav-link" href="{{ url_for('register_page') }}">&emsp;Register&emsp;</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn nav-link" href="{{ url_for('product_register') }}">&emsp;Register Beer&emsp;</a>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+		</nav>
+		{% endblock %}
+
+		{% block content %}
+	<body>
+		<div id="content" class="container" style="min-height:100% width:80%">
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					{% for message in messages %}
+						<div class=" alert alert-warning alert-dismissable fade show" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							{{message}}
+						</div>	
+
+						{% endfor %}
+					{% endif %}
+				{% endwith %}
+		</div>
+		{% endblock %}
+		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+	</body>
+</html>

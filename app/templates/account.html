@@ -1,0 +1,64 @@
+{% extends "header.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+<script src="https://ajax.googlapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+{% block content %}
+<br>
+<br>
+<br>
+<body>
+    <div class="container">
+        <div class="jumbotron center">
+            <hr>
+            <h1 align="center">User: {{ user }}</h1>
+            <hr>
+            {% for post in posts %}
+            <p align="center">
+            Date of Review: <b>{{post[2]}}</b>
+            <form align="center" action="{{ url_for('delete_review') }}" method=post class=delete-entry>
+                <input type="hidden" name="id" value="{{post[4]}}">
+                <input type="submit" value="Delete" />
+            </form>
+            </p>
+            <p align="center">
+            Name of Beer: <b>{{post[0]}}</b> &emsp;Score: <b>{{post[3]}}</b>
+            </p>
+            <p align="center">
+            Review Body: <b>{{post[1]}}</b>
+            </p>
+            <p align="center">
+                <button class="edit">Edit Review</button>
+            </p>
+            <br>
+            <hr>
+            <br>
+            <div id="update">
+                <form align="center" action="{{ url_for('update_review') }}" method=post class=update-entry>
+                    <label for="score">Edit Score (1-5)</label>
+                    <select multiple class="form-control" name="score">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                    <label for="body">Edit Body</label>
+                    <textarea class="form-control" name="body" rows="3"></textarea>
+                    <input type="hidden" name="id" value="{{post[5]}}">
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $('#update').hide();    
+        });
+        
+        $('.edit').on('click',function(){
+            $('#update').show();
+        });
+         
+    </script>
+</body>
+{% endblock %} 
